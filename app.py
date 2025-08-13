@@ -17,19 +17,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 with open('bakery_knowledge_base_fi.json', 'r', encoding='utf-8') as f:
     knowledge_base = json.load(f)
 
-# def kb_to_text(kb):
-#     text = f"Aukioloajat: {kb['aukioloajat']}\n"
-#     text += f"Osoite: {kb['osoite']}\n"
-#     text += f"Yhteystiedot: puhelin {kb['yhteystiedot']['puhelin']}, sähköposti {kb['yhteystiedot']['sähköposti']}\n"
-#     text += "Menu:\n"
-#     for item in kb['menu']:
-#         text += f"- {item['nimi']}, hinta {item['hinta']}, allergeenit: {', '.join(item['allergeenit'])}, ainekset: {', '.join(item['ainekset'])}\n"
-#     text += f"Erikoistilaukset: {kb['erikoistilaukset']}\n"
-#     text += f"Kausitarjous: {kb['kausitarjous']}\n"
-#     text += f"Maksutavat: {', '.join(kb['maksutavat'])}\n"
-#     text += f"Lisätietoja: {kb['lisätietoja']}\n"
-#     return text
-
+# Adding a comment for the git commit
 def kb_to_text(kb):
     text = f"<p><strong>Aukioloajat:</strong> {kb['aukioloajat']}</p>"
     text += f"<p><strong>Osoite:</strong> {kb['osoite']}</p>"
