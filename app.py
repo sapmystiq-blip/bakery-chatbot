@@ -1,9 +1,3 @@
-# import os
-# import json
-# from flask import Flask, request, jsonify, send_from_directory
-# from dotenv import load_dotenv
-# from openai import OpenAI
-
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from dotenv import load_dotenv
 import os
