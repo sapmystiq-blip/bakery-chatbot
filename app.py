@@ -1,13 +1,10 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import json
 
-app = Flask(__name__)
-
-# Initialize OpenAI client
-# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+app = Flask(__name__, static_folder='static')
 
 # Load environment variables from .env
 load_dotenv()
@@ -17,7 +14,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 with open('bakery_knowledge_base_fi.json', 'r', encoding='utf-8') as f:
     knowledge_base = json.load(f)
 
-# Adding a comment for the git commit
+# Convert KB to HTML text
 def kb_to_text(kb):
     text = f"<p><strong>Aukioloajat:</strong> {kb['aukioloajat']}</p>"
     text += f"<p><strong>Osoite:</strong> {kb['osoite']}</p>"
@@ -37,11 +34,20 @@ def kb_to_text(kb):
     
     return text
 
-
-# Serve the frontend
+# Serve index.html
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('static', 'index.html')
+
+# Serve CSS
+@app.route('/style.css')
+def style():
+    return send_from_directory('static', 'style.css')
+
+# Serve JS
+@app.route('/script.js')
+def script():
+    return send_from_directory('static', 'script.js')
 
 # Chat endpoint
 @app.route('/chat', methods=['POST'])
@@ -52,7 +58,7 @@ def chat():
             return jsonify({"error": "Missing 'message'"}), 400
 
         system_prompt = (
-            "Sinä olet Rakas Koti Leipomon chatbot. Vastaa aina ystävällisesti ja ammattimaisesti. "
+            "Sinä olet Rakas Kotileipomon chatbot. Vastaa aina ystävällisesti ja ammattimaisesti. "
             "Käytä alla olevaa tietopohjaa vastauksissasi:\n\n" + kb_to_text(knowledge_base)
         )
 
@@ -61,18 +67,12 @@ def chat():
             {"role": "user", "content": user_message}
         ]
 
-        # Create a chat completion with the new API
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=messages,
             temperature=0.7
         )
 
-        
-        # Old (causes error)
-        # answer = response.choices[0].message['content']
-
-        # New (correct)
         answer = response.choices[0].message.content
         return jsonify({"reply": answer})
 
