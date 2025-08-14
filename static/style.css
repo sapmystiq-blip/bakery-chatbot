@@ -22,7 +22,8 @@
   bottom: 90px; /* above bubble */
   right: 20px;
   width: 350px;
-  max-height: 500px;
+  max-width: 90%;       /* adapt to screen width */
+  max-height: 80vh;     /* adapt to screen height */
   background-color: #F5E4D0;
   border: 2px solid #D2A679;
   border-radius: 12px;
@@ -32,7 +33,7 @@
   z-index: 9998;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 
-  /* Hidden by default using transform and opacity */
+  /* Hidden by default */
   transform: translateY(20px);
   opacity: 0;
   pointer-events: none;
@@ -48,7 +49,6 @@
   pointer-events: auto;
 }
 
-
 /* Header */
 #chat-header {
   background-color: #D2A679;
@@ -56,6 +56,7 @@
   color: white;
   text-align: center;
   font-weight: bold;
+  font-size: 16px;
 }
 
 /* Messages */
@@ -66,6 +67,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  word-wrap: break-word; /* wrap long text */
 }
 
 /* User and bot messages */
@@ -104,4 +106,28 @@
   border: none;
   padding: 10px 15px;
   cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  #chat-window {
+    width: 90vw;
+    bottom: 80px;
+    right: 5vw;
+    max-height: 70vh;
+  }
+
+  #chat-header {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #chat-input input {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  #chat-input button {
+    padding: 8px 12px;
+  }
 }
