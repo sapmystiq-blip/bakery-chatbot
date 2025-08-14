@@ -1,169 +1,61 @@
-/* Floating chat widget */
-/* Floating chat icon */
-#chat-icon {
+/* Floating chat bubble */
+#chat-bubble {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #3b1f0c;
-  color: white;
-  font-size: 24px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  background-color: #8B5E3C;
+  color: white;
+  font-size: 30px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 9999;
 }
 
-/* Chat widget box */
-#chat-widget {
+/* Chat window panel with animation */
+#chat-window {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-#chat-header {
-  background: #82431b; /* same as bot color */
-  color: white;
-  padding: 12px 15px;
-  font-weight: bold;
-  font-size: 16px;
-  text-align: center;
-}
-/* Adjust chat container to account for header */
-#chat {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #f9f9f9;
-}
-
-
-#chat-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #82431b; /* make it brown */
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 28px;
-  z-index: 1000;
-}
-
-#chat-container {
-  position: fixed;
-  bottom: 90px; /* above button */
+  bottom: 90px; /* above bubble */
   right: 20px;
   width: 350px;
-  height: 450px;
-  background: #fdf2e5;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  max-height: 500px;
+  background-color: #F5E4D0;
+  border: 2px solid #D2A679;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  z-index: 9998;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 
-  /* Hidden initially */
-  transform: scale(0);
+  /* Hidden by default using transform and opacity */
+  transform: translateY(20px);
   opacity: 0;
-  transform-origin: bottom right;
+  pointer-events: none;
+
+  /* Smooth transition */
   transition: all 0.3s ease;
-  z-index: 999;
 }
 
-#chat-container.open {
-  transform: scale(1);
+/* Show chat window */
+#chat-window.show {
+  transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 
-#chat {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #fdf2e5;
-}
-
-.message.user {
-  align-self: flex-end;
-  background: #fdf2e5;
-  color: white;
-}
-
-.message.bot {
-  align-self: flex-start;
-  background: #ddb399 ; /* your light brown */
-  color: #82431b;      /* brown text for contrast */
-}
-
-
-
-
-/* --- Input area --- */
-#inputForm {
-  display: flex;
-  padding: 10px;
-  background: #ffe6d6; /* soft matching shade */
-  border-top: 1px solid #d9bba6;
-}
-
-#message {
-  flex: 1;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  outline: none;
-  background: #fdf2e5;
-}
-
-#send {
-  margin-left: 10px;
-  padding: 10px 20px;
-  border: none;
-  background: #82431b;
-  color: white;
-  font-size: 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-
-
-
-/* Expanded state */
-#chat-widget.open {
-  height: 400px;
-}
-
-
-/* Hidden class */
-.hidden {
-  display: none;
-}
 
 /* Header */
-
-
-/* Close button */
-#close-chat {
-  cursor: pointer;
+#chat-header {
+  background-color: #D2A679;
+  padding: 10px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* Messages */
@@ -171,73 +63,45 @@
   flex: 1;
   padding: 10px;
   overflow-y: auto;
-  background: #f9f9f9;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* Message bubbles */
-.message {
-  max-width: 75%;
-  padding: 8px 12px;
-  border-radius: 15px;
-  word-wrap: break-word;
-}
-
+/* User and bot messages */
 .message.user {
+  background-color: #FAF0E6;
   align-self: flex-end;
-  background: #3b1f0c;
-  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 80%;
 }
 
 .message.bot {
+  background-color: #FFE5B4;
   align-self: flex-start;
-  background: #ddb399;
-  color: #333;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 80%;
 }
 
-/* Input form */
-#chat-form {
-  display: flex;
-  border-top: 1px solid #ccc;
-}
-
+/* Input area */
 #chat-input {
+  display: flex;
+  border-top: 1px solid #D2A679;
+}
+
+#chat-input input {
   flex: 1;
   border: none;
   padding: 10px;
-  outline: none;
+  font-size: 14px;
 }
 
-#chat-form button {
-  background: #3b1f0c;
+#chat-input button {
+  background-color: #8B5E3C;
   color: white;
   border: none;
-  padding: 0 15px;
+  padding: 10px 15px;
   cursor: pointer;
-}
-
-
-#send:hover {
-  background: #0056b3;
-}
-
-/* --- Allergens & Ingredients --- */
-.allergens {
-  background: #ffcccc;
-  color: #800000;
-  padding: 2px 6px;
-  border-radius: 12px;
-  margin-left: 5px;
-  font-size: 12px;
-}
-
-.ingredients {
-  background: #ccffcc;
-  color: #006600;
-  padding: 2px 6px;
-  border-radius: 12px;
-  margin-left: 5px;
-  font-size: 12px;
 }

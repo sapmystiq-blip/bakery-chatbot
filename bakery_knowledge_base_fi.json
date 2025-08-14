@@ -9,33 +9,33 @@
     {
       "nimi": "Karjalanpiirakka riisi",
       "hinta": "1,40 €/kpl tai 12,00 €/10 kpl ",
-      "allergeenit": "gluteeni, maito",
+      "allergeenit": ["gluteeni, maito"],
       "ainekset": ["ruisjauho, laktoositon täysmaitojuoma (maito), riisi, suola"]
       
     },
     {
       "nimi": "Karjalanpiiraka peruna",
       "hinta": "1,40 €/kpl tai 12,00 €/10 kpl tarjous",
-      "allergeenit": "gluteeni, maito",
+      "allergeenit": ["gluteeni, maito"],
       "ainekset": ["ruisjauho, laktoositon täysmaitojuoma, perunahiutale, suola"]
     },
     {
       "nimi": "Karjalanpiirakka ohra",
       "hinta": "1,40 €/kpl tai 12,00 €/10 kpl tarjous",
-      "allergeenit": "gluteeni, maito",
+      "allergeenit": ["gluteeni, maito"],
       "ainekset": ["ruisjauho, laktoositon täysmaitojuoma(maito), ohrasuurimo, suola"]
     },
     {
       "nimi": "Vegaanipiirakka riisi",
       "hinta": "1,40 €/kpl",
       "hinta": "1,40 €/kpl tai 12,00 €/10 kpl",
-      "allergeenit": "gluteeni, kaura",
+      "allergeenit": ["gluteeni, kaura"],
       "ainekset": ["ruisjauho, kauramaito, riisi, suola"]
     },
     {
       "nimi": "Runebergintorttu",
       "hinta": "4,00 €",
-      "allergeenit": "gluteeni, maito, manteli",
+      "allergeenit": ["gluteeni, maito, manteli"],
       "ainekset": ["vehnäjauho, laktoositon täysmaitojuoma, mantelijauhe, sokeri, suola"]
     },
     

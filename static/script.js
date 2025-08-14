@@ -1,56 +1,98 @@
-const chatIcon = document.getElementById('chat-icon');
-const chatWidget = document.getElementById('chat-widget');
-const closeChat = document.getElementById('close-chat');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
-const chatMessages = document.getElementById('chat-messages');
+const chatBubble = document.getElementById("chat-bubble");
+const chatWindow = document.getElementById("chat-window");
+const sendBtn = document.getElementById("send-btn");
+const userInput = document.getElementById("user-input");
+const chatMessages = document.getElementById("chat-messages");
 
-// // Toggle chat box
-// chatIcon.addEventListener('click', () => {
-//   chatWidget.classList.toggle('open');
-// });
-
-// // Close chat
-// closeChat.addEventListener('click', () => {
-//   chatWidget.classList.remove('open');
-// });
-
-
-const chatToggle = document.getElementById('chat-toggle');
-const chatContainer = document.getElementById('chat-container');
-const chat = document.getElementById('chat');
-const form = document.getElementById('inputForm');
-const input = document.getElementById('message');
-
-chatToggle.addEventListener('click', () => {
-  chatContainer.classList.toggle('open');
+// Toggle chat window when clicking bubble
+chatBubble.addEventListener("click", () => {
+  chatWindow.classList.toggle("show");
 });
 
-function addMessage(text, sender) {
-  const div = document.createElement('div');
-  div.className = 'message ' + sender;
-  div.textContent = text;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+// Send message function
+function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text) return;
+  addMessage("user", text);
+  userInput.value = "";
+
+  // Call backend API
+  fetch("/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text })
+  })
+  .then(res => res.json())
+  .then(data => addMessage("bot", data.reply || "Ei vastausta"))
+  .catch(err => addMessage("bot", "Virhe palvelimella"));
 }
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const message = input.value.trim();
-  if (!message) return;
-  addMessage(message, 'user');
-  input.value = '';
+// Send message on button click
+sendBtn.addEventListener("click", sendMessage);
 
-  try {
-    const res = await fetch('/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message})
-    });
-    const data = await res.json();
-    addMessage(data.reply || data.error, 'bot');
-  } catch (err) {
-    addMessage('Virhe: ' + err.message, 'bot');
+// Send message on Enter key
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
   }
 });
 
+// Add message to chat
+function addMessage(role, text) {
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "message " + role;
+  msgDiv.textContent = text;
+  chatMessages.appendChild(msgDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Make chat bubble draggable
+let isDragging = false;
+let offsetX, offsetY;
+
+chatBubble.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  offsetX = e.clientX - chatBubble.getBoundingClientRect().left;
+  offsetY = e.clientY - chatBubble.getBoundingClientRect().top;
+  chatBubble.style.transition = "none"; // stop bounce during drag
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+
+  let left = e.clientX - offsetX;
+  let top = e.clientY - offsetY;
+
+  // Keep bubble inside screen
+  const bubbleRect = chatBubble.getBoundingClientRect();
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+
+  if (left < 0) left = 0;
+  if (top < 0) top = 0;
+  if (left + bubbleRect.width > windowWidth) left = windowWidth - bubbleRect.width;
+  if (top + bubbleRect.height > windowHeight) top = windowHeight - bubbleRect.height;
+
+  chatBubble.style.left = left + "px";
+  chatBubble.style.top = top + "px";
+  chatBubble.style.right = "auto";
+  chatBubble.style.bottom = "auto";
+
+  // Position chat window safely
+  const chatRect = chatWindow.getBoundingClientRect();
+  let chatLeft = left;
+  let chatTop = top + chatBubble.offsetHeight + 10;
+
+  if (chatLeft + chatRect.width > windowWidth) chatLeft = windowWidth - chatRect.width - 10;
+  if (chatTop + chatRect.height > windowHeight) chatTop = windowHeight - chatRect.height - 10;
+
+  chatWindow.style.left = chatLeft + "px";
+  chatWindow.style.top = chatTop + "px";
+});
+
+document.addEventListener("mouseup", () => {
+  if (!isDragging) return;
+  isDragging = false;
+  chatBubble.style.transition = ""; // restore transition
+});

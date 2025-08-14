@@ -15,25 +15,29 @@ with open('bakery_knowledge_base_fi.json', 'r', encoding='utf-8') as f:
     knowledge_base = json.load(f)
 
 # Convert KB to HTML text
+
+
+
+
 def kb_to_text(kb):
     text = f"<p><strong>Aukioloajat:</strong> {kb['aukioloajat']}</p>"
     text += f"<p><strong>Osoite:</strong> {kb['osoite']}</p>"
     text += f"<p><strong>Yhteystiedot:</strong> puhelin {kb['yhteystiedot']['puhelin']}, sähköposti {kb['yhteystiedot']['sähköposti']}</p>"
-    
+
+    # Menu as bulleted list
     text += "<p><strong>Menu:</strong></p><ul>"
     for item in kb['menu']:
         text += f"<li><strong>{item['nimi']}</strong> - {item['hinta']}<br>"
-        text += f"<span class='allergens'>Allergeenit: {', '.join(item['allergeenit'])}</span><br>"
-        text += f"<span class='ingredients'>Ainekset: {', '.join(item['ainekset'])}</span></li>"
+        #text += f"<span class='allergens'>Allergeenit: {', '.join(item['allergeenit'])}</span><br>"
+        #text += f"<span class='ingredients'>Ainekset: {', '.join(item['ainekset'])}</span></li>"
     text += "</ul>"
-    
+
     text += f"<p><strong>Erikoistilaukset:</strong> {kb['erikoistilaukset']}</p>"
     text += f"<p><strong>Kausitarjous:</strong> {kb['kausitarjous']}</p>"
     text += f"<p><strong>Maksutavat:</strong> {', '.join(kb['maksutavat'])}</p>"
     text += f"<p><strong>Lisätietoja:</strong> {kb['lisätietoja']}</p>"
-    
-    return text
 
+    return text
 # Serve index.html
 @app.route('/')
 def index():
@@ -83,7 +87,12 @@ def chat():
 # if __name__ == '__main__':
 #     app.run(port=5000, debug=True)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-    
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host="0.0.0.0", port=port)
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  # Railway/Render sets PORT
+    app.run(host="0.0.0.0", port=port, debug=True)
+

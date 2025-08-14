@@ -2,53 +2,23 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
-  <title>Raka's Kotileipomo Chatbotti</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Raka's kotileipomo Chatbotti</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <!-- Chat bubble button -->
+  <div id="chat-bubble">💬</div>
 
-  <!-- Floating Chat Icon -->
-  <!-- <div id="chat-icon">💬</div> -->
-
-  <!-- Chat Box (hidden by default) -->
-  <!-- <div id="chat-widget" class="hidden">
-    <div id="chat-header">
-      Raka's Kotileipomo
-      <span id="close-chat">✖</span>
-    </div>
+  <!-- Chat window panel -->
+  <div id="chat-window">
+    <div id="chat-header">Piirakkabotti</div>
     <div id="chat-messages"></div>
-    <form id="chat-form">
-      <input type="text" id="chat-input" placeholder="Kirjoita viesti..." autocomplete="off">
-      <button type="submit">Lähetä</button>
-    </form>
-  </div> -->
-
-  <!-- Floating chat button -->
-<!-- <div id="chat-widget">
-  <div id="chat-toggle">💬</div>
-  <div class="chat-container" id="chat-container">
-    <div id="chat"></div>
-    <form id="inputForm">
-      <input type="text" id="message" placeholder="Kirjoita viesti..." autocomplete="off">
-      <button type="submit" id="send">Lähetä</button>
-    </form>
+    <div id="chat-input">
+      <input type="text" id="user-input" placeholder="Kirjoita viesti...">
+      <button id="send-btn">Lähetä</button>
+    </div>
   </div>
-</div> -->
 
-
-<button id="chat-toggle">💬</button>
-
-<div id="chat-container">
-  <div id="chat-header">Piirakkabotti</div>
-  <div id="chat"></div>
-  <form id="inputForm">
-    <input type="text" id="message" placeholder="Kirjoita viesti..." autocomplete="off">
-    <button type="submit" id="send">Lähetä</button>
-  </form>
-</div>
-
-
-
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
