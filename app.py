@@ -37,7 +37,7 @@ def kb_to_text(kb):
 # Serve index.html
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory('templates', 'index.html')
 
 # Serve CSS
 @app.route('/style.css')
