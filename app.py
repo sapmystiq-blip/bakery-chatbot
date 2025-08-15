@@ -28,7 +28,7 @@ def kb_to_text(kb):
     text += "<p><strong>Menu:</strong></p><ul>"
     for item in kb['menu']:
         text += f"<li><strong>{item['nimi']}</strong> - {item['hinta']}<br>"
-        #text += f"<span class='allergens'>Allergeenit: {', '.join(item['allergeenit'])}</span><br>"
+        text += f"<span class='allergens'>Allergeenit: {', '.join(item['allergeenit'])}</span><br>"
         #text += f"<span class='ingredients'>Ainekset: {', '.join(item['ainekset'])}</span></li>"
     text += "</ul>"
 

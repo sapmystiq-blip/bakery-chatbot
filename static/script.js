@@ -96,3 +96,16 @@ document.addEventListener("mouseup", () => {
   isDragging = false;
   chatBubble.style.transition = ""; // restore transition
 });
+
+function checkOrientation() {
+  if (window.innerWidth > window.innerHeight) {
+    // Landscape
+    if (window.innerWidth < 800) { // only on mobile
+      alert("Please rotate your phone to portrait mode for the best chat experience.");
+    }
+  }
+}
+
+// Run on load and when orientation changes
+window.addEventListener("load", checkOrientation);
+window.addEventListener("resize", checkOrientation);
