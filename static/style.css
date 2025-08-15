@@ -113,12 +113,14 @@
 @media (max-width: 500px) {
   #chat-window {
     width: 95vw;
-    height: 80vh; /* Fixed size for mobile */
-    ottom: 80px;
+    /*height: 80vh; /* Fixed size for mobile */
+    bottom: 80px;
     right: 2.5vw;
-    max-height: 75vh;
+    /*max-height: 75vh;*/
     font-size: 1.1em; /* scale up text */
   }
+
+
 
   #chat-header {
     font-size: 18px;
