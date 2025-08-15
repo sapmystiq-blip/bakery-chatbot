@@ -109,3 +109,28 @@ function checkOrientation() {
 // Run on load and when orientation changes
 window.addEventListener("load", checkOrientation);
 window.addEventListener("resize", checkOrientation);
+
+
+
+function resizeChatWindow() {
+  const chatWindow = document.getElementById("chat-window");
+
+  if (window.innerWidth < 800) { // Mobile/tablet
+    if (window.innerWidth > window.innerHeight) {
+      // Landscape
+      chatWindow.style.display = "none"; // Hide chatbot
+      alert("Please rotate your phone to portrait mode for the best chat experience.");
+    } else {
+      // Portrait
+      chatWindow.style.display = "flex"; // Show chatbot
+      chatWindow.style.height = (window.innerHeight * 0.8) + "px"; // 80% visible height
+    }
+  } else {
+    // Desktop - reset height & show
+    chatWindow.style.display = "flex";
+    chatWindow.style.height = "";
+  }
+}
+
+window.addEventListener("load", resizeChatWindow);
+window.addEventListener("resize", resizeChatWindow);
