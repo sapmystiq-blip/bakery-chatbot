@@ -58,6 +58,15 @@
   text-align: center;
   font-weight: bold;
   font-size: 16px;
+  position: relative;
+}
+
+#chat-close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 /* Messages */
@@ -110,17 +119,15 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 500px) {
+/* Responsive adjustments for mobile portrait */
+@media (max-width: 500px) and (orientation: portrait) {
   #chat-window {
     width: 95vw;
-    /*height: 80vh; /* Fixed size for mobile */
-    bottom: 80px;
+    height: calc(var(--vh, 1vh) * 80); /* 80% of visible screen height */
+    bottom: 10px;
     right: 2.5vw;
-    /*max-height: 75vh;*/
-    font-size: 1.1em; /* scale up text */
+    font-size: 1.1em;
   }
-
-
 
   #chat-header {
     font-size: 18px;
@@ -147,4 +154,18 @@
     padding: 12px 16px;
     font-size: 16px;
   }
+
+  #chat-bubble {
+    width: 70px;
+    height: 70px;
+    font-size: 36px;
+  }
 }
+
+/* Hide chatbot in mobile landscape */
+@media (max-width: 500px) and (orientation: landscape) {
+  #chat-window {
+    display: none;
+  }
+}
+

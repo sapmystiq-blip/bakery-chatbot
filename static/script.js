@@ -1,36 +1,39 @@
 const chatBubble = document.getElementById("chat-bubble");
 const chatWindow = document.getElementById("chat-window");
+const chatClose = document.getElementById("chat-close");
 const sendBtn = document.getElementById("send-btn");
 const userInput = document.getElementById("user-input");
 const chatMessages = document.getElementById("chat-messages");
 
-// Toggle chat window when clicking bubble
+// === Open & Close ===
 chatBubble.addEventListener("click", () => {
-  chatWindow.classList.toggle("show");
+  chatWindow.classList.add("show");
+  chatBubble.style.display = "none"; // hide bubble while chat open
 });
 
-// Send message function
+chatClose.addEventListener("click", () => {
+  chatWindow.classList.remove("show");
+  chatBubble.style.display = "flex"; // restore bubble
+});
+
+// === Send message ===
 function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
   addMessage("user", text);
   userInput.value = "";
 
-  // Call backend API
   fetch("/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: text })
   })
-  .then(res => res.json())
-  .then(data => addMessage("bot", data.reply || "Ei vastausta"))
-  .catch(err => addMessage("bot", "Virhe palvelimella"));
+    .then(res => res.json())
+    .then(data => addMessage("bot", data.reply || "Ei vastausta"))
+    .catch(() => addMessage("bot", "Virhe palvelimella"));
 }
 
-// Send message on button click
 sendBtn.addEventListener("click", sendMessage);
-
-// Send message on Enter key
 userInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
@@ -38,7 +41,7 @@ userInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Add message to chat
+// === Add message to chat ===
 function addMessage(role, text) {
   const msgDiv = document.createElement("div");
   msgDiv.className = "message " + role;
@@ -47,7 +50,37 @@ function addMessage(role, text) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Make chat bubble draggable
+// === Orientation check ===
+function checkOrientation() {
+  if (window.innerWidth > window.innerHeight && window.innerWidth < 800) {
+    alert("Please rotate your phone to portrait mode for the best chat experience.");
+  }
+}
+window.addEventListener("load", checkOrientation);
+window.addEventListener("resize", checkOrientation);
+
+// === Resize chat dynamically ===
+function resizeChatWindow() {
+  if (window.innerWidth < 800) {
+    chatWindow.style.height = (window.innerHeight * 0.8) + "px";
+    chatWindow.style.width = "95vw";
+  } else {
+    chatWindow.style.height = "500px";
+    chatWindow.style.width = "350px";
+  }
+}
+window.addEventListener("load", resizeChatWindow);
+window.addEventListener("resize", resizeChatWindow);
+
+// === Mobile Safari/Chrome vh fix ===
+function setVH() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+window.addEventListener("load", setVH);
+window.addEventListener("resize", setVH);
+
+// === Make chat bubble draggable ===
 let isDragging = false;
 let offsetX, offsetY;
 
@@ -78,59 +111,47 @@ document.addEventListener("mousemove", (e) => {
   chatBubble.style.top = top + "px";
   chatBubble.style.right = "auto";
   chatBubble.style.bottom = "auto";
-
-  // Position chat window safely
-  const chatRect = chatWindow.getBoundingClientRect();
-  let chatLeft = left;
-  let chatTop = top + chatBubble.offsetHeight + 10;
-
-  if (chatLeft + chatRect.width > windowWidth) chatLeft = windowWidth - chatRect.width - 10;
-  if (chatTop + chatRect.height > windowHeight) chatTop = windowHeight - chatRect.height - 10;
-
-  chatWindow.style.left = chatLeft + "px";
-  chatWindow.style.top = chatTop + "px";
 });
 
 document.addEventListener("mouseup", () => {
   if (!isDragging) return;
   isDragging = false;
-  chatBubble.style.transition = ""; // restore transition
+  chatBubble.style.transition = ""; // restore transitions
 });
 
-function checkOrientation() {
-  if (window.innerWidth > window.innerHeight) {
-    // Landscape
-    if (window.innerWidth < 800) { // only on mobile
-      alert("Please rotate your phone to portrait mode for the best chat experience.");
-    }
-  }
-}
+// === Touch support for mobile drag ===
+chatBubble.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  const touch = e.touches[0];
+  offsetX = touch.clientX - chatBubble.getBoundingClientRect().left;
+  offsetY = touch.clientY - chatBubble.getBoundingClientRect().top;
+  chatBubble.style.transition = "none";
+});
 
-// Run on load and when orientation changes
-window.addEventListener("load", checkOrientation);
-window.addEventListener("resize", checkOrientation);
+document.addEventListener("touchmove", (e) => {
+  if (!isDragging) return;
+  const touch = e.touches[0];
 
+  let left = touch.clientX - offsetX;
+  let top = touch.clientY - offsetY;
 
+  const bubbleRect = chatBubble.getBoundingClientRect();
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
 
-function resizeChatWindow() {
-  const chatWindow = document.getElementById("chat-window");
+  if (left < 0) left = 0;
+  if (top < 0) top = 0;
+  if (left + bubbleRect.width > windowWidth) left = windowWidth - bubbleRect.width;
+  if (top + bubbleRect.height > windowHeight) top = windowHeight - bubbleRect.height;
 
-  if (window.innerWidth < 800) { // Mobile/tablet
-    if (window.innerWidth > window.innerHeight) {
-      // Landscape
-      chatWindow.style.display = "none"; // Hide chatbot
-      alert("Please rotate your phone to portrait mode for the best chat experience.");
-    } else {
-      // Portrait
-      chatWindow.style.display = "flex"; // Show chatbot
-      chatWindow.style.height = (window.innerHeight * 0.8) + "px"; // 80% visible height
-    }
-  } else {
-    // Desktop - reset height & show
-    chatWindow.style.display = "flex";
-    chatWindow.style.height = "";
-  }
-}
+  chatBubble.style.left = left + "px";
+  chatBubble.style.top = top + "px";
+  chatBubble.style.right = "auto";
+  chatBubble.style.bottom = "auto";
+});
 
-window.addEventListener("load", resizeChatWindow);
-window.addEventListener("resize", resizeChatWindow);
+document.addEventListener("touchend", () => {
+  if (!isDragging) return;
+  isDragging = false;
+  chatBubble.style.transition = "";
+});
