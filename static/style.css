@@ -120,7 +120,8 @@
 
 /* Responsive adjustments */
 /* Responsive adjustments for mobile portrait */
-@media (max-width: 500px) and (orientation: portrait) {
+/*@media (max-width: 500px) and (orientation: portrait) {*/
+@media (max-width: 500px){
   #chat-window {
     width: 95vw;
     height: calc(var(--vh, 1vh) * 85); /* 80% of visible screen height */
