@@ -123,7 +123,7 @@
 @media (max-width: 500px) and (orientation: portrait) {
   #chat-window {
     width: 95vw;
-    height: calc(var(--vh, 1vh) * 80); /* 80% of visible screen height */
+    height: calc(var(--vh, 1vh) * 85); /* 80% of visible screen height */
     bottom: 10px;
     right: 2.5vw;
     font-size: 1.1em;
